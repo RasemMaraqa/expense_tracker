@@ -1,8 +1,10 @@
-from extensions import db
+from flask_sqlalchemy import SQLAlchemy
+
+from extensions.db import DB as db
 
 
-class user(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(100),)
+    email = db.Column(db.String(50), unique=True, )
+    password = db.Column(db.String(100),)

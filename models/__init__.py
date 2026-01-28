@@ -1,2 +1,2 @@
-from user import user
-from spend import spend
+from .user import User
+from .expense import Expense
