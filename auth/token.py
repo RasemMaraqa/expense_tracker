@@ -1,4 +1,3 @@
-# not used for now
 
 from extensions.db import DB as db
 from models import User

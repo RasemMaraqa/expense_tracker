@@ -118,6 +118,7 @@ def add_expense():
         return redirect(url_for("user.user_page"))    
 
 @user_route.route("/delete_user/<int:i>")
+@admin_required
 def delete_user(i):
     user = User.query.filter_by(id = i).first()
     if not user:
@@ -125,15 +126,14 @@ def delete_user(i):
     expenses = Expense.query.filter_by(user_id=user.id).all()
     for e in expenses: # i have deleted the expenses first cuz if i deleted the user first it will give an error something about foreign key constraint cuz user is parent table :)
         db.session.delete(e)
-    db.session.delete(user)
+        db.session.delete(user)
   
-    db.session.commit()
-    return "User delete"
+        db.session.commit()
+        return "User delete"
 
 @user_route.route("/delete_expense/<int:expense_id>", methods=["GET","POST"])
 @login_required
 def delete_expense(expense_id):
-    
     user = User.query.get(session["user_id"])
     print(user)
     
