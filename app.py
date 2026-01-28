@@ -2,7 +2,7 @@ from flask import Flask, jsonify , request , render_template , redirect , url_fo
 from flask_sqlalchemy import SQLAlchemy
 import jwt
 from extensions.db import DB as db
-from routes import  user_route , login_route , home_route
+from routes import  user_route , login_route , signup_route
 from datetime import datetime, timedelta
 from functools import wraps
 
@@ -14,7 +14,7 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-app.register_blueprint(home_route)
+app.register_blueprint(signup_route)
 app.register_blueprint(login_route)
 app.register_blueprint(user_route)
 

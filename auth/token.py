@@ -1,20 +1,32 @@
 # not used for now
 
-
-from flask import Blueprint, request, jsonify
+from extensions.db import DB as db
+from models import User
+from flask import Blueprint, request, jsonify , current_app , redirect , url_for , session , abort
 import jwt
 from functools import wraps
 
-SECRET_KEY = 'af08f872d18b4fd0bfbee70c5132b54f'
 
-def token_required(f):
+def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token =  request.args.get('token')
-        if not token:
-            return jsonify({'not verifed': 'Token is missing!'}), 403
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-        except:
-            return jsonify({'not verifed': 'Token is invalid!'}), 403    
+        if "user_id" not in session:
+            return redirect(url_for("login.login"))
+        return f(*args, **kwargs)
+    return decorated
+
+
+
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("login.login"))
+
+        u = User.query.get(session["user_id"])
+        if not u or not u.is_admin:
+            return abort(403)  
+        return f(*args, **kwargs)
     return decorated
