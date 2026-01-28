@@ -14,7 +14,6 @@ user_route = Blueprint('user', __name__)
 def userpage(id):
     
         user = User.query.get(session["user_id"])
-        user = User.query.get(id)
         if not user:
             flash("User not found" , "error")
             return redirect(url_for("login.login")) 
