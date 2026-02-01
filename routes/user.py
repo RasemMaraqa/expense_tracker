@@ -138,9 +138,7 @@ def delete_user(i):
 @user_route.route("/delete_expense/<int:expense_id>", methods=["DELETE"])
 @login_required
 def delete_expense(expense_id):
-    user = db.session.get(User, session["user_id"])
-    print(user)
-    
+    user = db.session.get(User, session["user_id"])    
     if not user:
         return "User dose'nt exist"
     
