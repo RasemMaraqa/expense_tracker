@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;     
+    background-color: #f2f2f2;
+    font-family: Arial, sans-serif;
+  }
+
+  .login-box {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px; 
+    box-sizing: border-box;
+  }
+
+  input[type = "submit"]{
+    width: 100%;
+    padding: 12px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  input[type="text"], input[type="password"] {
+    width: 93.5%;
+    padding: 10px;
+    margin: 8px 0 16px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 8px;
+  }
+
+
+  button:hover {
+    background-color: #0b7dda;
+  }
+
+  .login-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  .login-links a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .social-login img {
+    width: 20px;
+    margin-left: 5px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+ 
+</style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Sign in</h2>
+    <form>
+      <input type="text" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <div>
+        <input type="checkbox" id="remember">
+        <label for="remember"><b>Remember me</b></label>
+        <input type="submit" style="margin-top: 10px;" value="Log in"></input>
+      </div>
+
+    
+      
+    </form>
+    <div class="login-links">
+      <a href="#" style="text-decoration: underline;">Create an account</a>
+      <div class="social-login">
+       <label=>Or login with</label> 
+        <img src="facebook.png" alt="Facebook">
+        <img src="google.png" alt="Google">
+      </div>
+    </div>
+  </div>
+</body>
+</html>
