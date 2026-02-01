@@ -15,7 +15,8 @@ def signup():
             flash("All fields required", "error")
             return render_template("signup.html")
 
-        if User.query.filter_by(email=email).first():
+        u_email = db.session.query(User).filter_by(email=email).first()
+        if u_email:
             flash("Email already exists", "error")
             return render_template("signup.html")
 

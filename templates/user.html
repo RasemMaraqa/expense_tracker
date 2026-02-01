@@ -78,12 +78,29 @@
       cursor: pointer;
     }
   </style>
+  <script>
+    function deleteExpense(expenseId) {
+      fetch(`/delete_expense/${expenseId}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (response.ok) {
+          location.reload();
+        } else {
+          alert('Failed to delete expense.');
+        }
+      });
+    }
+    </script>
 </head>
 
 <body>
   <div class="container">
 
-    <a class="logout" href="{{ url_for('login.logout') }}">Logout</a>
+    <form action="{{ url_for('login.logout') }}" method="post">
+  <button type="submit">Logout</button>
+</form>
+
 
     <h1>Hello, {{ user.username }} 👋</h1>
     <div class="email">{{ user.email }}</div>

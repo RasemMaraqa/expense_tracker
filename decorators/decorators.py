@@ -6,6 +6,9 @@ import jwt
 from functools import wraps
 
 
+db
+
+
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -20,11 +23,10 @@ def login_required(f):
 
 def admin_required(f):
     @wraps(f)
+    @login_required
     def decorated(*args, **kwargs):
-        if "user_id" not in session:
-            return redirect(url_for("login.login"))
 
-        u = User.query.get(session["user_id"])
+        u = db.session.get(User, session["user_id"])
         if not u or not u.is_admin:
             return abort(403)  
         return f(*args, **kwargs)
