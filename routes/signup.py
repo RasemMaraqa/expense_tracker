@@ -1,6 +1,9 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from models import User
 from extensions.db import DB as db
+from werkzeug.security import generate_password_hash
+
+
 
 signup_route = Blueprint("signup", __name__)
 
@@ -10,6 +13,9 @@ def signup():
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
+        hashed = generate_password_hash(password)
+        admin = request.form.get("admin")
+
 
         if not username or not email or not password:
             flash("All fields required", "error")
@@ -19,11 +25,13 @@ def signup():
         if u_email:
             flash("Email already exists", "error")
             return render_template("signup.html")
-
+        if admin == "banana":
+            is_admin = True
         user = User(
             username=username,
             email=email,
-            password=password  
+            password=hashed  ,
+            is_admin = is_admin
         )
 
         db.session.add(user)

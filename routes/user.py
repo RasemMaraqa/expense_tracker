@@ -13,63 +13,7 @@ user_route = Blueprint('user', __name__)
 
 
 
-@user_route.route("/user/<int:id>" , methods=["GET", "POST"])
-@admin_required
-def userpage(id):
-    
-        user = db.session.get(User, id)
-        if not user:
-            flash("User not found" , "error")
-            return redirect(url_for("login.login")) 
-        
-        expenses = db.session.query(Expense).filter_by(user_id=user.id).all()
-        expenses_data = [
-            {
-            "id": e.id,
-            "description": e.description,
-            "amount": e.amount,
-            "date": e.date
-        }
-        for e in expenses
-]
-        return render_template(
-        "user.html",
-        user=user,
-        expenses=expenses
-    )
 
-
-@user_route.route("/")
-@user_route.route("/user")
-@login_required
-def redirect_to_page():
-            
-    user_id = db.session.get(User, session.get("user_id"))
-    if not user_id:
-        return redirect(url_for("login.login"))
-    return redirect(url_for("user.user_page"))
-    
-@user_route.route("/user/page")
-@login_required
-def user_page():
-        
-        user = db.session.get(User, session["user_id"])
-    
-        expenses = db.session.query(Expense).filter_by(user_id=user.id).all()
-        expenses_data = [
-            {
-            "id": e.id,
-            "description": e.description,
-            "amount": e.amount,
-            "date": e.date
-        }
-        for e in expenses
-]
-        return render_template(
-        "user.html",
-        user=user,
-        expenses=expenses
-    )
 
 
     
@@ -102,7 +46,8 @@ def init_admin():
     
         db.session.add(user)
         db.session.commit()
-        return "admin created"
+        flash("Admin created" , "success")
+        return redirect(url_for("login.login"))
     
 @user_route.route("/add_expense" , methods=["POST"])
 @login_required
@@ -112,29 +57,26 @@ def add_expense():
         amount = request.form.get("amount")
         if not user_f:
             return "User dose'nt exist"
+        data = request.get_json()
+        if not data :
+            return "No data provided"
         expense = Expense(
-            description=request.form.get("description"),
-            amount=float(amount),
+            description=data.get("description"),
+            amount=float(data.get("amount")),
             user_id=user_f.id
         )
         db.session.add(expense)
         db.session.commit()
-        return redirect(url_for("user.user_page"))    
-
-@user_route.route("/delete_user/<int:i>")
-@admin_required
-def delete_user(i):
-    user = db.session.get(User, i).first()
-    if not user:
-        return "User dose'nt exist"
-    expenses = db.session.query(Expense).filter_by(user_id = i).all()
-    for e in expenses: # i have deleted the expenses first cuz if i deleted the user first it will give an error something about foreign key constraint cuz user is parent table :)
-        db.session.delete(e)
-        db.session.delete(user)
-  
-        db.session.commit()
-        return "User delete"
-
+        return jsonify({
+        "id": expense.id,
+        "description": expense.description,
+        "amount": expense.amount,
+        "date": expense.date.strftime("%Y-%m-%d")
+        }), 201
+    
+    
+    
+    
 @user_route.route("/delete_expense/<int:expense_id>", methods=["DELETE"])
 @login_required
 def delete_expense(expense_id):
@@ -148,6 +90,21 @@ def delete_expense(expense_id):
     db.session.delete(expense)
     db.session.commit()
     return "Expense deleted" 
+
+
+@user_route.route("/delete_user/<int:i>", methods=["DELETE"])
+@admin_required
+def delete_user(i):
+    user = db.session.get(User, i).first()
+    if not user:
+        return "User dose'nt exist"
+    expenses = db.session.query(Expense).filter_by(user_id = i).all()
+    for e in expenses: # i have deleted the expenses first cuz if i deleted the user first it will give an error something about foreign key constraint cuz user is parent table :)
+        db.session.delete(e)
+        db.session.delete(user)
+  
+        db.session.commit()
+        return "User delete"
 
 
 
@@ -188,8 +145,8 @@ def view_users():
                     "date": e.date
                 }
                 for e in expenses if e.user_id == u.id
-            ],
-            "password": u.password
+            ]
+            
         }
         for u in users
     ]

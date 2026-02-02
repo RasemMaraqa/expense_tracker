@@ -1,10 +1,6 @@
-from flask import Flask, jsonify , request , render_template , redirect , url_for   , session ,Blueprint
-from flask_sqlalchemy import SQLAlchemy
-import jwt
+from flask import Flask
 from extensions.db import DB as db
-from routes import  user_route , login_route , signup_route
-from datetime import datetime, timedelta
-from functools import wraps
+from routes import  user_route , login_route , signup_route , frontend_route
 
 app = Flask(__name__)
 
@@ -19,6 +15,7 @@ with app.app_context():
 app.register_blueprint(signup_route)
 app.register_blueprint(login_route)
 app.register_blueprint(user_route)
+app.register_blueprint(frontend_route)
 
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

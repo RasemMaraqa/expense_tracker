@@ -1,9 +1,7 @@
-from flask import Blueprint, request, jsonify , session , render_template, flash , redirect , url_for
+from flask import Blueprint, request , session , render_template, flash , redirect , url_for
 from models import User
-import jwt
 from extensions.db import DB as db
-from datetime import datetime, timedelta
-from flask import current_app
+from services import authenticate
 
 
 login_route = Blueprint('login', __name__)
@@ -16,9 +14,8 @@ login_route = Blueprint('login', __name__)
 
 @login_route.route("/login" , methods=["GET", "POST"])
 def login():
-    user_id = session.get("user_id")
     if session.get("user_id"):
-        return redirect(url_for("user.user_page", id=session["user_id"]))
+        return redirect(url_for("frontend.user_page"))
     
     if request.method == "POST":
         email = request.form.get("email")
@@ -31,20 +28,19 @@ def login():
         
         
         
-        found_user = db.session.query(User).filter_by(email=email).first()
+        found_user = authenticate(email,password)
         
         
-        if (not found_user) or (password != found_user.password):
+        if (not found_user) :
         
             flash("invalid inputs" , "error")
             return render_template("./login.html") , 401
         
         session.clear()
         session["user_id"] = found_user.id
-        session["username"] = found_user.username
         session.permanent = True
 
-        return redirect(url_for("user.user_page", id=found_user.id))
+        return redirect(url_for("frontend.user_page"))
 
     return render_template("login.html")
             
