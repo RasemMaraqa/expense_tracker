@@ -1,8 +1,7 @@
 
 from extensions.db import DB as db
 from models import User
-from flask import Blueprint, request, jsonify , current_app , redirect , url_for , session , abort
-import jwt
+from flask import  redirect , url_for , session , abort
 from functools import wraps
 
 

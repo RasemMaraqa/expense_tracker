@@ -16,22 +16,6 @@ user_route = Blueprint('user', __name__)
 
 
 
-    
-@user_route.route("/init_user")
-@login_required
-def init_user():
-        
-        user = User(
-        username= "User"+str(random.randint(1,1000)) ,
-        email="test"+str(random.randint(1,1000))+"@test.com",
-        password="1234"
-        )
-   
-    
-        db.session.add(user)
-        db.session.commit()
-        return "User created"
-
 
 @user_route.route("/init_admin")
 def init_admin():

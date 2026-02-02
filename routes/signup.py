@@ -14,7 +14,6 @@ def signup():
         email = request.form.get("email")
         password = request.form.get("password")
         hashed = generate_password_hash(password)
-        admin = request.form.get("admin")
 
 
         if not username or not email or not password:
@@ -25,13 +24,11 @@ def signup():
         if u_email:
             flash("Email already exists", "error")
             return render_template("signup.html")
-        if admin == "banana":
-            is_admin = True
+        
         user = User(
             username=username,
             email=email,
-            password=hashed  ,
-            is_admin = is_admin
+            password=hashed  
         )
 
         db.session.add(user)
