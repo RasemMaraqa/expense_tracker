@@ -10,7 +10,7 @@ frontend_route = Blueprint('frontend', __name__)
 
 
 
-@frontend_route.route("/user/<int:id>" , methods=["GET", "POST"])
+@frontend_route.route("/user/<int:id>")
 @admin_required
 def userpage(id):
     
@@ -19,8 +19,6 @@ def userpage(id):
             flash("User not found" , "error")
             return redirect(url_for("login.login")) 
         
-        
-
         return render_template(
         "user.html",
         user=user,

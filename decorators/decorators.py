@@ -5,7 +5,7 @@ from flask import  redirect , url_for , session , abort
 from functools import wraps
 
 
-db
+
 
 
 def login_required(f):
@@ -27,6 +27,6 @@ def admin_required(f):
 
         u = db.session.get(User, session["user_id"])
         if not u or not u.is_admin:
-            return abort(403)  
+            return abort(401)  
         return f(*args, **kwargs)
     return decorated

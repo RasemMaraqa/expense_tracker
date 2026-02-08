@@ -1,8 +1,8 @@
-from flask import Flask ,Blueprint, request, jsonify , session , render_template, flash , redirect , url_for , abort
+from flask import Blueprint, request, jsonify , session ,  flash , redirect , url_for 
+from werkzeug.security import generate_password_hash
 from models import User
 from models import Expense
 from datetime import datetime
-import random
 from decorators.decorators import login_required , admin_required
 from extensions.db import DB as db
 
@@ -23,7 +23,7 @@ def init_admin():
         user = User(
         username= "rasem" ,
         email="rasemmaraqa@gmail.com",
-        password="code"
+        password=generate_password_hash("code")
         , is_admin=True
         )
    
@@ -32,6 +32,7 @@ def init_admin():
         db.session.commit()
         flash("Admin created" , "success")
         return redirect(url_for("login.login"))
+    
     
 @user_route.route("/add_expense" , methods=["POST"])
 @login_required
