@@ -1,5 +1,4 @@
-from flask import Blueprint, request, jsonify , session ,  flash , redirect , url_for 
-from werkzeug.security import generate_password_hash
+from flask import Blueprint, request, jsonify, session
 from models import User
 from models import Expense
 from datetime import datetime
@@ -17,23 +16,6 @@ user_route = Blueprint('user', __name__)
 
 
 
-@user_route.route("/init_admin")
-def init_admin():
-        
-        user = User(
-        username= "rasem" ,
-        email="rasemmaraqa@gmail.com",
-        password=generate_password_hash("code")
-        , is_admin=True
-        )
-   
-    
-        db.session.add(user)
-        db.session.commit()
-        flash("Admin created" , "success")
-        return redirect(url_for("login.login"))
-    
-    
 @user_route.route("/add_expense" , methods=["POST"])
 @login_required
 def add_expense():
@@ -80,16 +62,15 @@ def delete_expense(expense_id):
 @user_route.route("/delete_user/<int:i>", methods=["DELETE"])
 @admin_required
 def delete_user(i):
-    user = db.session.get(User, i).first()
+    user = db.session.get(User, i)
     if not user:
         return "User dose'nt exist"
     expenses = db.session.query(Expense).filter_by(user_id = i).all()
-    for e in expenses: # i have deleted the expenses first cuz if i deleted the user first it will give an error something about foreign key constraint cuz user is parent table :)
+    for e in expenses:
         db.session.delete(e)
-        db.session.delete(user)
-  
-        db.session.commit()
-        return "User delete"
+    db.session.delete(user)
+    db.session.commit()
+    return "User deleted"
 
 
 

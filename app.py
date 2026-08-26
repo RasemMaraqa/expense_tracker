@@ -1,10 +1,13 @@
 from flask import Flask
+import os
 from extensions.db import DB as db
 from routes import  user_route , login_route , signup_route , frontend_route
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'af08f872d18b4fd0bfbee70c5132b54f'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+if not app.config['SECRET_KEY']:
+    raise RuntimeError('SECRET_KEY environment variable is required.')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
 

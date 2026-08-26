@@ -31,16 +31,26 @@ A small Flask web application for tracking personal expenses. Users can sign up,
 2. Install the dependencies:
 
    ```powershell
-   pip install Flask Flask-SQLAlchemy
+   pip install -r requirements.txt
    ```
 
-3. Start the application:
+3. Create a private secret key (one-time setup). Copy and run these lines in PowerShell:
+
+   ```powershell
+   $newSecret = python -c "import secrets; print(secrets.token_urlsafe(32))"
+   [Environment]::SetEnvironmentVariable("SECRET_KEY", $newSecret, "User")
+   $env:SECRET_KEY = $newSecret
+   ```
+
+   This creates a random private key that keeps your login session secure. It is saved for your Windows user account and is not added to Git. Keep it private—never paste it into the code, README, or a public post. If you open a new terminal later, close and reopen it before running the app.
+
+4. Start the application:
 
    ```powershell
    python app.py
    ```
 
-4. Open `http://127.0.0.1:5000/signup` in a browser to create an account. After signing in, you can use the built-in frontend dashboard to add, view, and delete your expenses.
+5. Open `http://127.0.0.1:5000/signup` in a browser to create an account. After signing in, you can use the built-in frontend dashboard to add, view, and delete your expenses.
 
 The database is created automatically on first startup at `instance/site.db`.
 
@@ -83,4 +93,4 @@ instance/site.db   Local SQLite database
 ## Notes
 
 - Flask debug mode is disabled by default.
-- Before deploying, move the Flask secret key to an environment variable.
+- `SECRET_KEY` is required at startup and must be stored as an environment variable.
