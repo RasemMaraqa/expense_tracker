@@ -50,7 +50,7 @@ A small Flask web application for tracking personal expenses. Users can sign up,
    python app.py
    ```
 
-5. Open `http://127.0.0.1:5000/signup` in a browser to create an account. After signing in, you can use the built-in frontend dashboard to add, view, and delete your expenses.
+5. Open `http://127.0.0.1:5000` in a browser to create an account. After signing in, you can use the built-in frontend dashboard to add, view, and delete your expenses.
 
 The database is created automatically on first startup at `instance/site.db`.
 
