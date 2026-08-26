@@ -34,15 +34,15 @@ A small Flask web application for tracking personal expenses. Users can sign up,
    pip install -r requirements.txt
    ```
 
-3. Create a private secret key (one-time setup). Copy and run these lines in PowerShell:
+3. The project uses a local `.env` file to keep its private secret key out of the code. It is already set up in this copy of the project, so do not share or upload this file.
+
+   If you download the project on another computer, copy `.env.example` and rename the copy to `.env`. Then replace `replace-with-a-long-random-secret` with a new private value. An easy option is to open PowerShell and run:
 
    ```powershell
-   $newSecret = python -c "import secrets; print(secrets.token_urlsafe(32))"
-   [Environment]::SetEnvironmentVariable("SECRET_KEY", $newSecret, "User")
-   $env:SECRET_KEY = $newSecret
+   [Convert]::ToBase64String([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
    ```
 
-   This creates a random private key that keeps your login session secure. It is saved for your Windows user account and is not added to Git. Keep it private—never paste it into the code, README, or a public post. If you open a new terminal later, close and reopen it before running the app.
+   Copy the value it prints and put it after `SECRET_KEY=` in the `.env` file. Keep it private.
 
 4. Start the application:
 
@@ -93,4 +93,4 @@ instance/site.db   Local SQLite database
 ## Notes
 
 - Flask debug mode is disabled by default.
-- `SECRET_KEY` is required at startup and must be stored as an environment variable.
+- `SECRET_KEY` is required at startup and is loaded from the private `.env` file.

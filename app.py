@@ -2,9 +2,11 @@ from flask import Flask
 import os
 from extensions.db import DB as db
 from routes import  user_route , login_route , signup_route , frontend_route
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
+load_dotenv()
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 if not app.config['SECRET_KEY']:
     raise RuntimeError('SECRET_KEY environment variable is required.')
