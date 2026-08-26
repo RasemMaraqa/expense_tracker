@@ -40,7 +40,7 @@ A small Flask web application for tracking personal expenses. Users can sign up,
    python app.py
    ```
 
-4. Open `http://127.0.0.1:5000/signup` in a browser to create an account.
+4. Open `http://127.0.0.1:5000/signup` in a browser to create an account. After signing in, you can use the built-in frontend dashboard to add, view, and delete your expenses.
 
 The database is created automatically on first startup at `instance/site.db`.
 
@@ -82,5 +82,5 @@ instance/site.db   Local SQLite database
 
 ## Notes
 
-- This project is configured for local development (`debug=True`).
-- Before deploying, move the Flask secret key to an environment variable and disable debug mode.
+- Flask debug mode is disabled by default.
+- Before deploying, move the Flask secret key to an environment variable.
