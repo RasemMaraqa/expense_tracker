@@ -1,7 +1,7 @@
 
 from extensions.db import DB as db
 from models import User
-from flask import  redirect , url_for , session , abort
+from flask import redirect, url_for, session, abort
 from functools import wraps
 
 
@@ -15,9 +15,6 @@ def login_required(f):
             return redirect(url_for("login.login"))
         return f(*args, **kwargs)
     return decorated
-
-
-
 
 
 def admin_required(f):
